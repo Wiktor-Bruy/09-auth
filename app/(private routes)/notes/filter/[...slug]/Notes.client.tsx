@@ -6,7 +6,7 @@ import { type FetchTagNote } from '@/types/note';
 
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { fetchFilterNotes } from '@/lib/api';
+import { fetchNotes } from '@/lib/api/clientApi';
 import { useDebouncedCallback } from 'use-debounce';
 import Link from 'next/link';
 
@@ -24,7 +24,7 @@ export default function NotesClient({ tag }: NotesClientProps) {
 
   const { data } = useQuery({
     queryKey: ['notes', tag, page, word],
-    queryFn: () => fetchFilterNotes(tag, page, word),
+    queryFn: () => fetchNotes(tag, page, word),
     placeholderData: keepPreviousData,
     refetchOnMount: false,
     throwOnError: true,
