@@ -13,7 +13,9 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
 
   useEffect(() => {
     router.refresh();
-    setTimeout(() => setLoading(false), 0);
+    setTimeout(() => {
+      setLoading(false);
+    }, 0);
   }, [router]);
 
   return <>{loading ? <p>Loadind...</p> : children}</>;

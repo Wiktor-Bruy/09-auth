@@ -2,22 +2,22 @@
 
 import css from './page.module.css';
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { AxiosError } from 'axios';
 
-import { register } from '@/lib/api/clientApi';
-import { type UserReg } from '@/types/user';
+import { UserReg } from '@/types/user';
+import { login } from '@/lib/api/clientApi';
 
 import Modal from '@/components/Modal/Modal';
 
-export default function Register() {
+export default function Login() {
   const router = useRouter();
-  const [error, setError] = useState(false);
   const [isModal, setIsModal] = useState(false);
+  const [mess, setMess] = useState('');
 
   function closeModal() {
-    router.push('/sign-in');
+    router.push('/sign-up');
   }
 
   async function handleSubmit(formData: FormData) {
@@ -25,25 +25,29 @@ export default function Register() {
       email: formData.get('email') as string,
       password: formData.get('password') as string,
     };
+
     try {
-      const res = await register(data);
+      const res = await login(data);
       if (res) {
+        setMess('');
         router.push('/profile');
       }
-    } catch (error: unknown) {
+    } catch (error) {
       if (error instanceof AxiosError) {
-        if (error.response?.data?.response?.message === 'User exists') {
+        if (error.response?.data?.response?.message === 'Invalid credentials') {
           setIsModal(true);
         }
+        setMess(error.response?.data?.response?.message);
       }
-      setError(true);
+      setMess('An error has occurred. We apologize...');
     }
   }
 
   return (
     <main className={css.mainContent}>
-      <h1 className={css.formTitle}>Sign up</h1>
       <form className={css.form} action={handleSubmit}>
+        <h1 className={css.formTitle}>Sign in</h1>
+
         <div className={css.formGroup}>
           <label htmlFor="email">Email</label>
           <input
@@ -69,14 +73,14 @@ export default function Register() {
 
         <div className={css.actions}>
           <button type="submit" className={css.submitButton}>
-            Register
+            Log in
           </button>
         </div>
 
-        {error && <p className={css.error}>Error</p>}
+        {mess !== '' && <p className={css.error}>{mess}</p>}
         {isModal && (
           <Modal onClose={closeModal}>
-            <p>This user is already registered. Please go to the login page.</p>
+            <p>Invalid credentials or user not found.</p>
           </Modal>
         )}
       </form>

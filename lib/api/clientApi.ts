@@ -1,10 +1,5 @@
-import {
-  type Note,
-  type NewNote,
-  type FetchTagNote,
-  type User,
-  type UserReg,
-} from '@/types/note';
+import { type Note, type NewNote, type FetchTagNote } from '@/types/note';
+import { type User, type UserReg } from '@/types/user';
 import { nextServer } from './api';
 
 interface Answer {
@@ -62,7 +57,10 @@ export async function register(data: UserReg): Promise<User> {
   return res.data;
 }
 
-export async function login() {}
+export async function login(data: UserReg): Promise<User> {
+  const res = await nextServer.post('/auth/login', data);
+  return res.data;
+}
 
 export async function logout() {}
 
