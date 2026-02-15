@@ -75,3 +75,7 @@ export async function proxy(req: NextRequest) {
     }
   }
 }
+
+export const config = {
+  matcher: ['/notes/:path*', '/profile/:path*', '/sign-up', '/sign-in'],
+};

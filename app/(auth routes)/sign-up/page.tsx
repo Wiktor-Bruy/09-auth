@@ -6,12 +6,14 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AxiosError } from 'axios';
 
-import { register } from '@/lib/api/clientApi';
+import { register, getMe } from '@/lib/api/clientApi';
 import { type UserReg } from '@/types/user';
+import { useLogin } from '@/lib/store/authStore';
 
 import Modal from '@/components/Modal/Modal';
 
 export default function Register() {
+  const setUser = useLogin(state => state.setUser);
   const router = useRouter();
   const [error, setError] = useState(false);
   const [isModal, setIsModal] = useState(false);
@@ -28,6 +30,8 @@ export default function Register() {
     try {
       const res = await register(data);
       if (res) {
+        const user = await getMe();
+        setUser(user);
         router.push('/profile');
       }
     } catch (error: unknown) {

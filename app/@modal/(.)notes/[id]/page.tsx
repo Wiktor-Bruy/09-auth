@@ -5,7 +5,7 @@ import {
 } from '@tanstack/react-query';
 import { Metadata } from 'next';
 
-import { fetchNoteById } from '@/lib/api/clientApi';
+import { fetchNoteById } from '@/lib/api/serverApi';
 import NotePreviewClient from './NotePreview.client';
 
 interface NotePreviewProps {

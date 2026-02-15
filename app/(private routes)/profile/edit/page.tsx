@@ -2,35 +2,69 @@
 
 import css from './page.module.css';
 
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
+import { useLogin } from '@/lib/store/authStore';
+import { updateMe } from '@/lib/api/clientApi';
+
+interface UpdateUser {
+  email: string;
+  username: string;
+}
+
 export default function Edit() {
+  const user = useLogin(state => state.user);
+  const router = useRouter();
+
+  function cancel() {
+    router.push('/profile');
+  }
+
+  async function handleSubmit(formData: FormData) {
+    const newUser: UpdateUser = {
+      email: user.email,
+      username: formData.get('username') as string,
+    };
+
+    const res = await updateMe(newUser);
+    if (res) {
+      router.push('/profile');
+    }
+  }
+
   return (
     <main className={css.mainContent}>
       <div className={css.profileCard}>
         <h1 className={css.formTitle}>Edit Profile</h1>
 
         <Image
-          src="avatar"
+          src={user.avatar}
           alt="User Avatar"
           width={120}
           height={120}
           className={css.avatar}
         />
 
-        <form className={css.profileInfo}>
+        <form className={css.profileInfo} action={handleSubmit}>
           <div className={css.usernameWrapper}>
             <label htmlFor="username">Username:</label>
-            <input id="username" type="text" className={css.input} />
+            <input
+              id="username"
+              name="username"
+              type="text"
+              className={css.input}
+              defaultValue={user.username}
+            />
           </div>
 
-          <p>Email: user_email@example.com</p>
+          <p>Email: {user.email}</p>
 
           <div className={css.actions}>
             <button type="submit" className={css.saveButton}>
               Save
             </button>
-            <button type="button" className={css.cancelButton}>
+            <button onClick={cancel} type="button" className={css.cancelButton}>
               Cancel
             </button>
           </div>

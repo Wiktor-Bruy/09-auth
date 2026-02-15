@@ -7,11 +7,13 @@ import { useState } from 'react';
 import { AxiosError } from 'axios';
 
 import { UserReg } from '@/types/user';
-import { login } from '@/lib/api/clientApi';
+import { login, getMe } from '@/lib/api/clientApi';
+import { useLogin } from '@/lib/store/authStore';
 
 import Modal from '@/components/Modal/Modal';
 
 export default function Login() {
+  const setUser = useLogin(state => state.setUser);
   const router = useRouter();
   const [isModal, setIsModal] = useState(false);
   const [mess, setMess] = useState('');
@@ -30,6 +32,8 @@ export default function Login() {
       const res = await login(data);
       if (res) {
         setMess('');
+        const user = await getMe();
+        setUser(user);
         router.push('/profile');
       }
     } catch (error) {

@@ -7,6 +7,11 @@ interface Answer {
   totalPages: number;
 }
 
+interface UpdateUser {
+  email: string;
+  username: string;
+}
+
 export async function fetchNotes(
   tag: FetchTagNote,
   page: number,
@@ -77,4 +82,7 @@ export async function getMe(): Promise<User> {
   return res.data;
 }
 
-export async function updateMe() {}
+export async function updateMe(data: UpdateUser): Promise<User> {
+  const res = await nextServer.patch('/users/me', data);
+  return res.data;
+}
