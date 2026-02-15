@@ -62,10 +62,19 @@ export async function login(data: UserReg): Promise<User> {
   return res.data;
 }
 
-export async function logout() {}
+export async function logout() {
+  const res = await nextServer.post('/auth/logout');
+  return res.data;
+}
 
-export async function checkSession() {}
+export async function checkSession() {
+  const res = await nextServer.get('/auth/session');
+  return res;
+}
 
-export async function getMe() {}
+export async function getMe(): Promise<User> {
+  const res = await nextServer.get('/users/me');
+  return res.data;
+}
 
 export async function updateMe() {}
