@@ -18,5 +18,5 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
     }, 0);
   }, [router]);
 
-  return <>{loading ? <p>Loadind...</p> : children}</>;
+  return <>{loading ? <p>Loading...</p> : children}</>;
 }

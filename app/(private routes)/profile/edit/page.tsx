@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 import { useLogin } from '@/lib/store/authStore';
-import { updateMe } from '@/lib/api/clientApi';
+import { updateMe, getMe } from '@/lib/api/clientApi';
 
 interface UpdateUser {
   email: string;
@@ -15,6 +15,7 @@ interface UpdateUser {
 
 export default function Edit() {
   const user = useLogin(state => state.user);
+  const setUser = useLogin(state => state.setUser);
   const router = useRouter();
 
   function cancel() {
@@ -29,6 +30,8 @@ export default function Edit() {
 
     const res = await updateMe(newUser);
     if (res) {
+      const updatedUser = await getMe();
+      setUser(updatedUser);
       router.push('/profile');
     }
   }

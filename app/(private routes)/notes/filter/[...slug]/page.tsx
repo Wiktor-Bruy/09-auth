@@ -6,7 +6,7 @@ import {
 import { Metadata } from 'next';
 
 import { FetchTagNote } from '@/types/note';
-import { fetchNotes } from '@/lib/api/clientApi';
+import { fetchNotes } from '@/lib/api/serverApi';
 import NotesClient from './Notes.client';
 
 import css from './page.module.css';

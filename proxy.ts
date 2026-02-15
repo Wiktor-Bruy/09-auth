@@ -20,7 +20,7 @@ export async function proxy(req: NextRequest) {
       return NextResponse.next();
     }
     if (isPublic) {
-      return NextResponse.redirect(new URL('/profile', req.url));
+      return NextResponse.redirect(new URL('/', req.url));
     }
   } else {
     if (refreshToken) {
@@ -44,7 +44,7 @@ export async function proxy(req: NextRequest) {
           }
         }
         if (isPublic) {
-          return NextResponse.redirect(new URL('/profile', req.url), {
+          return NextResponse.redirect(new URL('/', req.url), {
             headers: {
               Cookie: cookie.toString(),
             },
