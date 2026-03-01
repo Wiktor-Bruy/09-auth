@@ -26,7 +26,7 @@ export default function NoteForm() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notes'] });
       clearDraft();
-      cancelForm();
+      successForm();
     },
   });
 
@@ -41,6 +41,10 @@ export default function NoteForm() {
 
   function cancelForm() {
     router.back();
+  }
+
+  function successForm() {
+    router.push('/notes/filter/all');
   }
 
   function handleSubmit(formDada: FormData) {
